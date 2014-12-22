@@ -16,6 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "server" do |cfg|
     cfg.vm.box = "ubuntu/trusty64"
+    cfg.ssh.forward_agent = true
     cfg.vm.synced_folder "~/Downloads/go", "/downloads"
 
     cfg.vm.network "forwarded_port", guest: 8153, host: 8153
@@ -36,6 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     agent_ip = 20 + i
     config.vm.define "agent#{i}" do |cfg|
       cfg.vm.box = "ubuntu/trusty64"
+      cfg.ssh.forward_agent = true
       cfg.vm.synced_folder "~/Downloads/go", "/downloads"
 
       cfg.vm.network "private_network", ip: "192.168.33.#{agent_ip}"

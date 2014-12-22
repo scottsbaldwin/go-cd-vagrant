@@ -8,6 +8,7 @@
       with_items:
         - openjdk-6-jre
         - unzip
+        - git
     - name: install go-server
       apt:
         deb: /downloads/go-server-14.4.0-1356.deb
