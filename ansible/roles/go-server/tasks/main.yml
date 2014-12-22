@@ -1,0 +1,24 @@
+---
+- hosts: server
+  gather_facts: true
+  tasks:
+    - name: install go dependencies
+      apt: name={{ item }}
+      sudo: yes
+      with_items:
+        - openjdk-6-jre
+        - unzip
+    - name: install jdk
+      apt:
+        name: openjdk-6-jre
+      sudo: yes
+    - name: install go-server
+      apt:
+        deb: /downloads/go-server-14.4.0-1356.deb
+      sudo: yes
+    - name: start go-server
+      service:
+        name: go-server
+        state: started
+        enabled: yes
+      sudo: yes

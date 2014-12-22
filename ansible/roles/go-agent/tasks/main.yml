@@ -1,0 +1,31 @@
+---
+- hosts: agent*
+  gather_facts: true
+  tasks:
+    - name: install go dependencies
+      apt: name={{ item }}
+      sudo: yes
+      with_items:
+        - openjdk-6-jre
+        - unzip
+    - name: install go-agent
+      apt:
+        deb: /downloads/go-agent-14.4.0-1356.deb
+      sudo: yes
+    - name: set server IP for agent config
+      template:
+        src: go-agent-config
+        dest: /etc/default/go-agent
+        owner: go
+        group: go
+        mode: 0644
+      notify:
+      - restart go-agent
+      sudo: yes
+    - name: ensure go-agent started
+      service: name=go-agent state=started enabled=yes
+      sudo: yes
+  handlers:
+    - name: restart go-agent
+      service: name=go-agent state=restarted
+      sudo: yes
